@@ -4,7 +4,7 @@ defmodule TuringWeb.GameLive do
 
   alias Turing.Game
   alias Turing.Game.{Board, Move}
-  alias TuringWeb.{Turn, Ball, GameBoard, Guess}
+  alias TuringWeb.{Confirm, Options, GameBoard, Status}
 
   # socket is actually this struct: %Socket{assigns: %{live_action: :index}}
 
@@ -38,28 +38,16 @@ defmodule TuringWeb.GameLive do
     assign(socket, game: Board.show(socket.assigns.board))
   end
 
-  def render_score(%{reds: reds, whites: whites}) do
-    left = List.duplicate("R", reds) |> Enum.join()
-    right = List.duplicate("W", whites) |> Enum.join()
-    left <> right
-  end
-
-  def render_guess(guess), do: inspect guess
-
   def render(assigns) do
+    game_over = assigns.game.status != :playing
     ~H"""
-    <h1>Turing Game</h1>
-    <GameBoard game = {{ assigns.game }} />
-    <Guess balls = {{ assigns.move }} />
-    <Turn/>
-    <Ball name = "1"/>
-    <Ball name = "2"/>
-    <Ball name = "3"/>
-    <Ball name = "4"/>
-    <Ball name = "5"/>
-    <Ball name = "6"/>
-    <Ball name = "7"/>
-    <Ball name = "8"/>
+    <section class="phx-hero game-view">
+      <h1>Mastermind</h1>
+      <Status game={{ assigns.game }} />
+      <Options />
+      <Confirm disabled={{ length(assigns.move) < 4 or game_over }} />
+      <GameBoard game={{ assigns.game }} move={{ assigns.move }} game_over={{ game_over }}/>
+    </section>
     """
   end
 
