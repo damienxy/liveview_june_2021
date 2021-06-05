@@ -11,6 +11,10 @@ defmodule Turing.Game do
     |> Enum.take(4)
   end
 
+  def start_move() do
+    Move.new()
+  end
+
   def guess(board, move) do
     Board.make_move(board, move)
   end
@@ -21,5 +25,9 @@ defmodule Turing.Game do
 
   def delete(balls) do
     Move.remove(balls)
+  end
+
+  def show(board) do 
+    Board.show(board)
   end
 end 

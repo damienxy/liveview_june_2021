@@ -3,7 +3,6 @@ defmodule TuringWeb.GameLive do
   use Surface.Component
 
   alias Turing.Game
-  alias Turing.Game.{Board, Move}
   alias TuringWeb.{Confirm, Options, GameBoard, Status}
 
   # socket is actually this struct: %Socket{assigns: %{live_action: :index}}
@@ -23,7 +22,7 @@ defmodule TuringWeb.GameLive do
   end
 
   def build_move(socket) do
-    assign(socket, move: Move.new())
+    assign(socket, move: Game.start_move())
   end
 
   def make_move(socket) do
@@ -35,7 +34,7 @@ defmodule TuringWeb.GameLive do
   end
 
   def show(socket) do
-    assign(socket, game: Board.show(socket.assigns.board))
+    assign(socket, game: Game.show(socket.assigns.board))
   end
 
   def render(assigns) do
