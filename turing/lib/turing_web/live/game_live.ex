@@ -3,7 +3,7 @@ defmodule TuringWeb.GameLive do
   use Surface.Component
 
   alias Turing.Game
-  alias TuringWeb.{Confirm, Options, GameBoard, Status}
+  alias TuringWeb.{Back, Confirm, Options, GameBoard, Status}
 
   # socket is actually this struct: %Socket{assigns: %{live_action: :index}}
 
@@ -33,6 +33,10 @@ defmodule TuringWeb.GameLive do
     assign(socket, move: Game.choose(socket.assigns.move, ball))
   end
 
+  def back(socket) do
+    assign(socket, move: Game.remove_last(socket.assigns.move))
+  end
+
   def show(socket) do
     assign(socket, game: Game.show(socket.assigns.board))
   end
@@ -44,6 +48,7 @@ defmodule TuringWeb.GameLive do
       <h1>Mastermind</h1>
       <Status game={{ assigns.game }} />
       <Options />
+      <Back disabled={{ length(assigns.move) == 0 or game_over }} />
       <Confirm disabled={{ length(assigns.move) < 4 or game_over }} />
       <GameBoard game={{ assigns.game }} move={{ assigns.move }} game_over={{ game_over }}/>
     </section>
@@ -56,6 +61,10 @@ defmodule TuringWeb.GameLive do
 
   def handle_event("choose", %{"ball" => ball}, socket) do
     {:noreply, socket |> choose(ball)}
+  end
+
+  def handle_event("back", _, socket) do
+    {:noreply, socket |> back()}
   end
 
 end

@@ -23,6 +23,10 @@ defmodule Turing.Game do
     Move.add(balls, String.to_integer(ball))
   end
 
+  def remove_last(balls) do
+    Move.remove(balls)
+  end
+
   def delete(balls) do
     Move.remove(balls)
   end
